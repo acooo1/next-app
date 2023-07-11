@@ -1,14 +1,13 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { create } from "zustand";
+import * as React from 'react';
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { create } from 'zustand';
 
-import Modal from "@/components/ui/modal";
-
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -16,13 +15,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import Modal from '@/components/ui/modal';
 
 const formSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(1, { message: 'required' }),
 });
 
 function StoreModal() {
@@ -32,7 +30,7 @@ function StoreModal() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: '',
     },
   });
 
@@ -42,32 +40,32 @@ function StoreModal() {
 
   return (
     <Modal
-      title="Create a store"
-      description="Add a new store to manage products and categories"
+      title='Create a store'
+      description='Add a new store to manage products and categories'
       isOpen={isOpen}
       onClose={close}
     >
-      <div className="space-y-4  py-2 pb-4">
+      <div className='space-y-4 py-2 pb-4'>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
-              name="name"
+              name='name'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="E-commerce" {...field} />
+                    <Input placeholder='E-commerce' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <footer className="pt-6 space-x-2 flex items-center justify-end">
-              <Button variant="outline" onClick={close}>
+            <footer className='flex items-center justify-end space-x-2 pt-6'>
+              <Button variant='outline' onClick={close}>
                 Cancel
               </Button>
-              <Button type="submit">Continue</Button>
+              <Button type='submit'>Continue</Button>
             </footer>
           </form>
         </Form>
@@ -103,7 +101,7 @@ type UseStoreModalStore = {
   };
 };
 
-const useStoreModal = create<UseStoreModalStore>((set) => ({
+const useStoreModal = create<UseStoreModalStore>(set => ({
   isOpen: false,
   actions: {
     open: () => set({ isOpen: true }),
@@ -111,7 +109,7 @@ const useStoreModal = create<UseStoreModalStore>((set) => ({
   },
 }));
 
-const useStoreModalIsOpen = () => useStoreModal((state) => state.isOpen);
-const useStoreModalActions = () => useStoreModal((state) => state.actions);
+const useStoreModalIsOpen = () => useStoreModal(state => state.isOpen);
+const useStoreModalActions = () => useStoreModal(state => state.actions);
 
 export { StoreModalProvider, useStoreModalIsOpen, useStoreModalActions };

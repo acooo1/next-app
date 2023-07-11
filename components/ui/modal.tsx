@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
 import {
   Dialog,
   DialogContent,
-  DialogTitle,
   DialogDescription,
   DialogHeader,
-} from "@/components/ui/dialog";
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 type ModalProps = {
   title: string;

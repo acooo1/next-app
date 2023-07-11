@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write . --ignore-path .gitignore"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.21.14",
@@ -34,5 +35,9 @@
     "typescript": "5.1.6",
     "zod": "^3.21.4",
     "zustand": "^4.3.9"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.4.0"
   }
 }

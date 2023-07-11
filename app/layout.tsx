@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 
-import { StoreModalProvider } from "@/components/store/store-modal";
+import './globals.css';
+import { ClerkProvider } from '@clerk/nextjs';
 
-import "./globals.css";
+import { StoreModalProvider } from '@/components/store/store-modal';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard",
-  description: "Administration Dashboard for our SAAS Product",
+  title: 'Admin Dashboard',
+  description: 'Administration Dashboard for our SAAS Product',
 };
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang='en'>
         <body className={inter.className}>
           <StoreModalProvider />
           {children}
