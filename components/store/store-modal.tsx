@@ -2,7 +2,9 @@
 
 import * as React from 'react';
 
+import { useToast } from '../ui/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
+import ky from 'ky';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { create } from 'zustand';
@@ -20,7 +22,7 @@ import { Input } from '@/components/ui/input';
 import Modal from '@/components/ui/modal';
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: 'required' }),
+  name: z.string().min(1, { message: 'Required' }),
 });
 
 function StoreModal() {
@@ -34,8 +36,31 @@ function StoreModal() {
     },
   });
 
-  const onSubmit = () => {
-    // TODO
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const { toast } = useToast();
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setIsLoading(true);
+      await ky.post('/api/stores', { json: values });
+      form.reset();
+      toast({ description: 'Store created.' });
+    } catch (error) {
+      toast({
+        title: 'Could not create store.',
+        description: 'Try again or contact the administrator.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // TODO: fix form reset on cancel.
+  const onCancel = () => {
+    form.reset();
+    close();
   };
 
   return (
@@ -55,17 +80,23 @@ function StoreModal() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder='E-commerce' {...field} />
+                    <Input
+                      disabled={isLoading}
+                      placeholder='E-commerce'
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <footer className='flex items-center justify-end space-x-2 pt-6'>
-              <Button variant='outline' onClick={close}>
+              <Button disabled={isLoading} variant='outline' onClick={onCancel}>
                 Cancel
               </Button>
-              <Button type='submit'>Continue</Button>
+              <Button disabled={isLoading} type='submit'>
+                Continue
+              </Button>
             </footer>
           </form>
         </Form>

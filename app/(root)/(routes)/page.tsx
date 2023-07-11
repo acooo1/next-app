@@ -7,8 +7,6 @@ import {
   useStoreModalIsOpen,
 } from '@/components/store/store-modal';
 
-// import { Button } from '@/components/ui/button';
-
 export default function SetupPage() {
   const isOpen = useStoreModalIsOpen();
   const { open } = useStoreModalActions();
@@ -20,12 +18,5 @@ export default function SetupPage() {
     }
   }, [isOpen, open]);
 
-  // TODO: remove all of this
-  // const { open: openStoreModal } = useStoreModalActions();
-
-  return (
-    <section className='p-5'>
-      {/* <Button onClick={openStoreModal}>Toggle modal</Button> */}
-    </section>
-  );
+  return null;
 }
