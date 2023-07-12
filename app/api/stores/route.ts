@@ -4,7 +4,6 @@ import { auth } from '@clerk/nextjs';
 
 import { prisma } from '@/lib/db';
 
-// TODO: validate with zod ?
 export async function POST(request: Request) {
   try {
     const { userId } = auth();
@@ -14,15 +13,13 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-
-    // TODO: find a way to properly validate body (zod again ?).
     const { name } = body as { name: string };
 
     if (!name) {
       return new NextResponse('Name is required', { status: 400 });
     }
 
-    const store = prisma.store.create({
+    const store = await prisma.store.create({
       data: {
         name,
         userId,
