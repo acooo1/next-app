@@ -1,6 +1,9 @@
 import { redirect } from 'next/navigation';
 
-import { auth } from '@clerk/nextjs';
+import { UserButton, auth } from '@clerk/nextjs';
+
+import Navbar from '@/components/navbar';
+import StoreSelector from '@/components/store/store-selector';
 
 import { prisma } from '@/lib/db';
 
@@ -19,18 +22,22 @@ export default async function DashboardLayout({
     redirect('/sign-in');
   }
 
-  // We should not allow creating duplicates stores.
-  const store = await prisma.store.findUnique({
-    where: { id: params.storeId, userId },
-  });
+  const stores = await prisma.store.findMany({ where: { userId } });
 
-  if (!store) {
+  if (!stores) {
     redirect('/');
   }
 
   return (
     <>
-      <nav>This will be a navbar</nav>
+      <header className='flex h-16 items-center border-b p-4'>
+        <StoreSelector stores={stores} />
+        <Navbar className='mx-6' />
+        <div className='ml-auto'>
+          <UserButton />
+        </div>
+      </header>
+
       {children}
     </>
   );
