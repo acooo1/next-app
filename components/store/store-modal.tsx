@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { useToast } from '../ui/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
-import ky from 'ky';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { create } from 'zustand';
@@ -43,9 +43,9 @@ function StoreModal() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setIsLoading(true);
-      await ky.post('/api/stores', { json: values });
-      form.reset();
-      toast({ description: 'Store created.' });
+      const response = await axios.post('/api/stores', values);
+      // Due to error when using 'redirect()' from 'next' sometimes.
+      window.location.assign(`/${response.data.id}`);
     } catch (error) {
       toast({
         title: 'Could not create store.',
@@ -57,7 +57,6 @@ function StoreModal() {
     }
   };
 
-  // TODO: fix form reset on cancel.
   const onCancel = () => {
     form.reset();
     close();
@@ -91,7 +90,12 @@ function StoreModal() {
               )}
             />
             <footer className='flex items-center justify-end space-x-2 pt-6'>
-              <Button disabled={isLoading} variant='outline' onClick={onCancel}>
+              <Button
+                type='button'
+                disabled={isLoading}
+                variant='outline'
+                onClick={onCancel}
+              >
                 Cancel
               </Button>
               <Button disabled={isLoading} type='submit'>
