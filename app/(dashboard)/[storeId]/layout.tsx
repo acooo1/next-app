@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { UserButton, auth } from '@clerk/nextjs';
+import { ThemeSelector } from '@components/theme';
 
 import Navbar from '@/components/navbar';
 import StoreSelector from '@/components/store/store-selector';
@@ -33,7 +34,8 @@ export default async function DashboardLayout({
       <header className='flex h-16 items-center border-b p-4'>
         <StoreSelector stores={stores} />
         <Navbar className='mx-6' />
-        <div className='ml-auto'>
+        <div className='ml-auto flex h-16 items-center space-x-4'>
+          <ThemeSelector />
           <UserButton />
         </div>
       </header>

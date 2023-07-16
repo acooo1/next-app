@@ -90,8 +90,6 @@ export default function StoreSelector({ stores }: StoreSelectorProps) {
                   key={store.value}
                   onSelect={() => onStoreSelect(store.value)}
                 >
-                  <StoreIcon className='mr-2 h-4 w-4' />
-                  {store.label}
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
@@ -100,6 +98,7 @@ export default function StoreSelector({ stores }: StoreSelectorProps) {
                         : 'opacity-0',
                     )}
                   />
+                  {store.label}
                 </CommandItem>
               ))}
             </CommandGroup>
