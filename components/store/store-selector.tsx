@@ -66,6 +66,7 @@ export default function StoreSelector({ stores }: StoreSelectorProps) {
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button
+          type='button'
           variant='outline'
           role='combobox'
           aria-expanded={isOpen}
