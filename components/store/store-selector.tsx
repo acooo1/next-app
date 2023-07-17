@@ -6,10 +6,10 @@ import { useParams, useRouter } from 'next/navigation';
 
 import { type Store } from '@prisma/client';
 import {
-  Check,
-  ChevronsUpDown,
-  PlusCircle,
-  Store as StoreIcon,
+  CheckIcon,
+  ChevronsUpDownIcon,
+  PlusCircleIcon,
+  StoreIcon,
 } from 'lucide-react';
 
 import { useStoreModalActions } from '@/components/store/store-modal';
@@ -76,7 +76,7 @@ export default function StoreSelector({ stores }: StoreSelectorProps) {
             ? storeOptions.find(store => store.value === currentStore?.value)
                 ?.label
             : 'Select store...'}
-          <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+          <ChevronsUpDownIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-[200px] p-0'>
@@ -90,7 +90,7 @@ export default function StoreSelector({ stores }: StoreSelectorProps) {
                   key={store.value}
                   onSelect={() => onStoreSelect(store.value)}
                 >
-                  <Check
+                  <CheckIcon
                     className={cn(
                       'mr-2 h-4 w-4',
                       store.value === currentStore?.value
@@ -112,7 +112,7 @@ export default function StoreSelector({ stores }: StoreSelectorProps) {
                   openModal();
                 }}
               >
-                <PlusCircle className='mr-2 h-4 w-4' />
+                <PlusCircleIcon className='mr-2 h-4 w-4' />
                 Create store
               </CommandItem>
             </CommandGroup>
