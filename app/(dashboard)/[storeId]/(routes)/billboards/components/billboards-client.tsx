@@ -2,28 +2,41 @@
 
 import { useParams, useRouter } from 'next/navigation';
 
+import { BillboardColumn, billboardColumns } from './columns';
 import { PlusIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { DataTable } from '@/components/ui/data-table';
 import Heading from '@/components/ui/heading';
+import { Separator } from '@/components/ui/separator';
 
-export default function BillboardsClient() {
+type BillboardsClientProps = {
+  billboards: BillboardColumn[];
+};
+
+export default function BillboardsClient({
+  billboards,
+}: BillboardsClientProps) {
   const params = useParams();
   const router = useRouter();
-  return (
-    <div className='flex items-center justify-between'>
-      <Heading
-        title='Billboards (0)'
-        description='Manage billboards for your store'
-      />
 
-      <Button
-        type='button'
-        onClick={() => router.push(`/${params.storeId}/billboards/new`)}
-      >
-        <PlusIcon className='mr-2 h-4 w-4' />
-        Add new
-      </Button>
-    </div>
+  return (
+    <>
+      <div className='flex items-center justify-between'>
+        <Heading
+          title={`Billboards (${billboards.length})`}
+          description='Manage billboards for your store'
+        />
+        <Button
+          type='button'
+          onClick={() => router.push(`/${params.storeId}/billboards/new`)}
+        >
+          <PlusIcon className='mr-2 h-4 w-4' />
+          Add new
+        </Button>
+      </div>
+      <Separator />
+      <DataTable columns={billboardColumns} data={billboards} />
+    </>
   );
 }
