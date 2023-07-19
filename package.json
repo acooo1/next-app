@@ -11,7 +11,8 @@
     "db:gen": "npx prisma generate",
     "db:push": "npx prisma db push",
     "db:clear": "npx prisma migrate reset",
-    "db:reset": "npm run db:clear && npm run db:gen && npm run db:push"
+    "db:reset": "npm run db:clear && npm run db:gen && npm run db:push",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.21.14",
@@ -48,6 +49,8 @@
     "autoprefixer": "10.4.14",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "postcss": "8.4.25",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.4.0",

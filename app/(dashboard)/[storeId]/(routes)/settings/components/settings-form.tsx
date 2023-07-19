@@ -4,7 +4,6 @@ import * as React from 'react';
 
 import { useParams, useRouter } from 'next/navigation';
 
-import useOrigin from '@/hooks/use-origin';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Store } from '@prisma/client';
 import axios from 'axios';
@@ -37,6 +36,8 @@ import Heading from '@/components/ui/heading';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/components/ui/use-toast';
+
+import useOrigin from '@/hooks/use-origin';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Required' }),

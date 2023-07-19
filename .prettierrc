@@ -25,7 +25,8 @@
     "^next",
     "<THIRD_PARTY_MODULES>",
     "@/components",
-    "@/lib"
+    "@/lib",
+    "@/hooks"
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true

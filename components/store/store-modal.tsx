@@ -3,7 +3,6 @@
 import * as React from 'react';
 
 import { useToast } from '../ui/use-toast';
-import useIsMounted from '@/hooks/use-is-mounted';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
@@ -21,6 +20,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import Modal from '@/components/ui/modal';
+
+import useIsMounted from '@/hooks/use-is-mounted';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Required' }),
