@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation';
 
-import SettingsForm from './components/settings-form';
 import { auth } from '@clerk/nextjs';
+
+import SettingsForm from './components/settings-form';
 
 import { prisma } from '@/lib/db';
 

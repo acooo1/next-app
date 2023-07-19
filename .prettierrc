@@ -23,8 +23,12 @@
   "importOrder": [
     "^react$",
     "^next",
+    "@radix",
+    "axios|prisma",
+    "hook-form|hookform|zod",
     "<THIRD_PARTY_MODULES>",
     "@/components",
+    "./components",
     "@/lib",
     "@/hooks"
   ],

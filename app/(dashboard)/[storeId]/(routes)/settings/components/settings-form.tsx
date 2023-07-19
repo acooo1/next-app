@@ -4,12 +4,14 @@ import * as React from 'react';
 
 import { useParams, useRouter } from 'next/navigation';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Store } from '@prisma/client';
 import axios from 'axios';
-import { TrashIcon } from 'lucide-react';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+import { TrashIcon } from 'lucide-react';
 
 import ApiAlert from '@/components/api-alert';
 import {
