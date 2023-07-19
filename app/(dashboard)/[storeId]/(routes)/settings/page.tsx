@@ -2,7 +2,8 @@ import { redirect } from 'next/navigation';
 
 import SettingsForm from './components/settings-form';
 import { auth } from '@clerk/nextjs';
-import { prisma } from '@lib/db';
+
+import { prisma } from '@/lib/db';
 
 type SettingsPageProps = {
   params: {

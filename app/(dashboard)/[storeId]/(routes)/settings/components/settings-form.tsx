@@ -4,7 +4,15 @@ import * as React from 'react';
 
 import { useParams, useRouter } from 'next/navigation';
 
-import ApiAlert from '@components/api-alert';
+import useOrigin from '@/hooks/use-origin';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Store } from '@prisma/client';
+import axios from 'axios';
+import { TrashIcon } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import ApiAlert from '@/components/api-alert';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,8 +23,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@components/ui/alert-dialog';
-import { Button } from '@components/ui/button';
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -24,18 +32,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@components/ui/form';
-import Heading from '@components/ui/heading';
-import { Input } from '@components/ui/input';
-import { Separator } from '@components/ui/separator';
-import { useToast } from '@components/ui/use-toast';
-import { zodResolver } from '@hookform/resolvers/zod';
-import useOrigin from '@hooks/use-origin';
-import { Store } from '@prisma/client';
-import axios from 'axios';
-import { TrashIcon } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+} from '@/components/ui/form';
+import Heading from '@/components/ui/heading';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/components/ui/use-toast';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Required' }),
@@ -65,6 +66,7 @@ export default function SettingsForm({ store }: { store: Store }) {
       setIsLoading(true);
       await axios.patch(`/api/stores/${params.storeId}`, values);
       router.refresh();
+      toast({ title: 'Store updated.' });
     } catch (error) {
       toast({
         variant: 'destructive',

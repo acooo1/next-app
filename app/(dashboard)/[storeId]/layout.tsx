@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation';
 
 import { UserButton, auth } from '@clerk/nextjs';
-import { ThemeSelector } from '@components/theme';
 
 import Navbar from '@/components/navbar';
 import StoreSelector from '@/components/store/store-selector';
+import { ThemeSelector } from '@/components/theme';
 
 import { prisma } from '@/lib/db';
 
