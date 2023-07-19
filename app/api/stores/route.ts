@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const { userId } = auth();
 
     if (!userId) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse('Unauthenticated', { status: 401 });
     }
 
     const body = await request.json();
@@ -28,6 +28,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(store);
   } catch (error) {
+    console.log('[STORES_POST]', error);
     return new NextResponse('Internal error', { status: 500 });
   }
 }
