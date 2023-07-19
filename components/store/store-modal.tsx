@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import { useToast } from '../ui/use-toast';
+import useIsMounted from '@/hooks/use-is-mounted';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
@@ -114,12 +115,7 @@ function StoreModal() {
  * component from every part of the application.
  */
 function StoreModalProvider() {
-  // Useful to prevent hydration issues between server and client components.
-  const [isMounted, setIsMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const isMounted = useIsMounted();
 
   if (!isMounted) {
     return null;

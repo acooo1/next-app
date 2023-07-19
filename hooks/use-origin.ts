@@ -1,16 +1,12 @@
-import * as React from 'react';
+import useIsMounted from '@/hooks/use-is-mounted';
 
 export default function useOrigin() {
-  const [isMounted, setIsMounted] = React.useState(false);
+  const isMounted = useIsMounted();
 
   const origin =
     typeof window !== 'undefined' && window.location.origin
       ? window.location.origin
       : '';
-
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   if (!isMounted) {
     return '';
