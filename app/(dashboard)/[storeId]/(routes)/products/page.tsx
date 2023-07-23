@@ -1,0 +1,47 @@
+import { format } from 'date-fns';
+
+import { ProductColumn } from './components/columns';
+import ProductsClient from './components/products-client';
+
+import { prisma } from '@/lib/db';
+import { priceFormatter } from '@/lib/utils';
+
+type ProductsPageProps = {
+  params: { storeId: string };
+};
+
+export default async function ProductsPage({ params }: ProductsPageProps) {
+  const products = await prisma.product.findMany({
+    where: {
+      storeId: params.storeId,
+    },
+    include: {
+      category: true,
+      size: true,
+      color: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  const formattedProducts: ProductColumn[] = products.map(product => ({
+    id: product.id,
+    name: product.name,
+    isFeatured: product.isFeatured,
+    isArchived: product.isArchived,
+    price: priceFormatter.format(product.price.toNumber()),
+    category: product.category.name,
+    size: product.size.name,
+    color: product.color.value,
+    createdAt: format(product.createdAt, 'MMMM do, yyyy'),
+  }));
+
+  return (
+    <main className='flex-col'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <ProductsClient products={formattedProducts} />
+      </div>
+    </main>
+  );
+}
