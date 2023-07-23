@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { useParams, useRouter } from 'next/navigation';
 
-import { Billboard } from '@prisma/client';
+import { Color } from '@prisma/client';
 import axios from 'axios';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -40,59 +40,60 @@ import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/components/ui/use-toast';
 
 const formSchema = z.object({
-  label: z.string().min(1, { message: 'Required' }),
-  imageUrl: z.string().min(1, { message: 'Required' }),
+  name: z.string().min(1, { message: 'Required' }),
+  value: z
+    .string()
+    .min(4)
+    .regex(/^#/, { message: 'String must be a valid hex code' }),
 });
 
-type BillboardFormValues = z.infer<typeof formSchema>;
+type ColorFormValues = z.infer<typeof formSchema>;
 
-type BillboardFormProps = {
-  billboard: Billboard | null;
+type ColorFormProps = {
+  color: Color | null;
 };
 
-export default function BillboardForm({ billboard }: BillboardFormProps) {
+export default function ColorForm({ color }: ColorFormProps) {
   const params = useParams();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const title = billboard ? 'Edit billboard' : 'Create billboard';
-  const description = billboard ? 'Edit billboard' : 'Add a new billboard';
-  const successMessage = billboard
-    ? 'Billboard updated.'
-    : 'Billboard created.';
+  const title = color ? 'Edit color' : 'Create color';
+  const description = color ? 'Edit color' : 'Add a new color';
+  const successMessage = color ? 'Color updated.' : 'Color created.';
 
-  const errorMessage = billboard
-    ? 'Could not update billboard.'
-    : 'Could not create billboard.';
+  const errorMessage = color
+    ? 'Could not update color.'
+    : 'Could not create color.';
 
-  const action = billboard ? 'Save changes' : 'Create';
+  const action = color ? 'Save changes' : 'Create';
 
-  const form = useForm<BillboardFormValues>({
+  const form = useForm<ColorFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: billboard || {
-      label: '',
-      imageUrl: '',
+    defaultValues: color || {
+      name: '',
+      value: '',
     },
   });
 
   const { toast } = useToast();
 
-  const onSubmit = async (values: BillboardFormValues) => {
+  const onSubmit = async (values: ColorFormValues) => {
     try {
       setIsLoading(true);
 
-      if (billboard) {
+      if (color) {
         await axios.patch(
-          `/api/${params.storeId}/billboards/${params.billboardId}`,
+          `/api/${params.storeId}/colors/${params.colorId}`,
           values,
         );
       } else {
-        await axios.post(`/api/${params.storeId}/billboards`, values);
+        await axios.post(`/api/${params.storeId}/colors`, values);
       }
 
       router.refresh();
-      router.push(`/${params.storeId}/billboards`);
+      router.push(`/${params.storeId}/colors`);
       toast({ title: successMessage });
     } catch (error) {
       toast({
@@ -108,18 +109,16 @@ export default function BillboardForm({ billboard }: BillboardFormProps) {
   const onDelete = async () => {
     try {
       setIsLoading(true);
-      await axios.delete(
-        `/api/${params.storeId}/billboards/${params.billboardId}`,
-      );
+      await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
       router.refresh();
-      router.push(`/${params.storeId}/billboards`);
-      toast({ title: 'Billboard deleted.' });
+      router.push(`/${params.storeId}/colors`);
+      toast({ title: 'Color deleted.' });
     } catch (error) {
       toast({
         variant: 'destructive',
-        title: 'Could not delete billboard.',
+        title: 'Could not delete color.',
         description:
-          'Make sure you removed all categories using this billboard first then try again. Otherwise, contact the administrator.',
+          'Make sure you removed all products using this color first then try again. Otherwise, contact the administrator.',
       });
     } finally {
       setIsLoading(false);
@@ -130,14 +129,14 @@ export default function BillboardForm({ billboard }: BillboardFormProps) {
     <>
       <div className='flex items-center justify-between'>
         <Heading title={title} description={description} />
-        {billboard ? (
+        {color ? (
           <AlertDialog>
             <AlertDialogTrigger>
               <Button
                 disabled={isLoading}
                 type='button'
                 variant='destructive'
-                size='icon'
+                color='icon'
               >
                 <TrashIcon className='h-4 w-4' />
               </Button>
@@ -149,7 +148,7 @@ export default function BillboardForm({ billboard }: BillboardFormProps) {
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently delete the
-                  billboard.
+                  color.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -165,37 +164,42 @@ export default function BillboardForm({ billboard }: BillboardFormProps) {
       <Separator />
       <Form {...form}>
         <form className='space-y-8' onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name='imageUrl'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Background image</FormLabel>
-                <FormControl>
-                  <ImageUploader
-                    urls={field.value ? [field.value] : []}
-                    disabled={isLoading}
-                    onChange={url => field.onChange(url)}
-                    onRemove={() => field.onChange('')}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div className='grid grid-cols-3 gap-8'>
             <FormField
               control={form.control}
-              name='label'
+              name='name'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Label</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder='Billboard label'
+                      placeholder='Color name'
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='value'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Value</FormLabel>
+                  <FormControl>
+                    <div className='flex items-center gap-x-4'>
+                      <Input
+                        disabled={isLoading}
+                        placeholder='Color value'
+                        {...field}
+                      />
+                      <div
+                        className='rounded-full border p-4'
+                        style={{ backgroundColor: field.value }}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

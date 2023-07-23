@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 
 import axios from 'axios';
 
-import { type BillboardColumn } from './columns';
+import { type SizeColumn } from './columns';
 import {
   CopyIcon,
   EditIcon,
@@ -35,7 +35,7 @@ import {
 import { toast } from '@/components/ui/use-toast';
 
 type CellActionProps = {
-  data: BillboardColumn;
+  data: SizeColumn;
 };
 export default function CellAction({ data }: CellActionProps) {
   const router = useRouter();
@@ -46,25 +46,25 @@ export default function CellAction({ data }: CellActionProps) {
 
   const onCopy = () => {
     navigator.clipboard.writeText(data.id);
-    toast({ title: 'Billboard Id copied to clipboard.' });
+    toast({ title: 'Size Id copied to clipboard.' });
   };
 
   const onEdit = () => {
-    router.push(`/${params.storeId}/billboards/${data.id}`);
+    router.push(`/${params.storeId}/sizes/${data.id}`);
   };
 
   const onDelete = async () => {
     try {
       setIsLoading(true);
-      await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+      await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
       router.refresh();
-      toast({ title: 'Billboard deleted.' });
+      toast({ title: 'Size deleted.' });
     } catch (error) {
       toast({
         variant: 'destructive',
-        title: 'Could not delete billboard.',
+        title: 'Could not delete size.',
         description:
-          'Make sure you removed all categories using this billboard first then try again. Otherwise, contact the administrator.',
+          'Make sure you removed all products using this size first then try again. Otherwise, contact the administrator.',
       });
     } finally {
       setIsLoading(false);
@@ -82,7 +82,7 @@ export default function CellAction({ data }: CellActionProps) {
             </AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the
-              billboard.
+              size.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -6,29 +6,29 @@ import { prisma } from '@/lib/db';
 
 export async function GET(
   _request: Request,
-  { params }: { params: { billboardId: string } },
+  { params }: { params: { colorId: string } },
 ) {
   try {
-    if (!params.billboardId) {
-      return new NextResponse('Billboard id is required', { status: 400 });
+    if (!params.colorId) {
+      return new NextResponse('Color id is required', { status: 400 });
     }
 
-    const billboard = await prisma.billboard.findUnique({
+    const color = await prisma.color.findUnique({
       where: {
-        id: params.billboardId,
+        id: params.colorId,
       },
     });
 
-    return NextResponse.json(billboard);
+    return NextResponse.json(color);
   } catch (error) {
-    console.log('[BILLBOARD_GET]', error);
+    console.log('[COLOR_GET]', error);
     return new NextResponse('Internal error', { status: 500 });
   }
 }
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { storeId: string; billboardId: string } },
+  { params }: { params: { storeId: string; colorId: string } },
 ) {
   try {
     const { userId } = auth();
@@ -52,38 +52,38 @@ export async function PATCH(
       return new NextResponse('Unauthorized', { status: 403 });
     }
 
-    if (!params.billboardId) {
-      return new NextResponse('Billboard id is required', { status: 400 });
+    if (!params.colorId) {
+      return new NextResponse('Color id is required', { status: 400 });
     }
 
     const body = await request.json();
-    const { label, imageUrl } = body as { label: string; imageUrl: string };
+    const { name, value } = body as { name: string; value: string };
 
-    if (!label) {
-      return new NextResponse('Label is required', { status: 400 });
+    if (!name) {
+      return new NextResponse('Name is required', { status: 400 });
     }
 
-    if (!imageUrl) {
-      return new NextResponse('Image URL is required', { status: 400 });
+    if (!value) {
+      return new NextResponse('Value is required', { status: 400 });
     }
 
-    const billboard = await prisma.billboard.update({
+    const color = await prisma.color.update({
       where: {
-        id: params.billboardId,
+        id: params.colorId,
       },
-      data: { label, imageUrl },
+      data: { value, name },
     });
 
-    return NextResponse.json(billboard);
+    return NextResponse.json(color);
   } catch (error) {
-    console.log('[BILLBOARD_PATCH]', error);
+    console.log('[COLOR_PATCH]', error);
     return new NextResponse('Internal error', { status: 500 });
   }
 }
 
 export async function DELETE(
   _request: Request,
-  { params }: { params: { storeId: string; billboardId: string } },
+  { params }: { params: { storeId: string; colorId: string } },
 ) {
   try {
     const { userId } = auth();
@@ -107,19 +107,19 @@ export async function DELETE(
       return new NextResponse('Unauthorized', { status: 403 });
     }
 
-    if (!params.billboardId) {
-      return new NextResponse('Billboard id is required', { status: 400 });
+    if (!params.colorId) {
+      return new NextResponse('Color id is required', { status: 400 });
     }
 
-    const billboard = await prisma.billboard.delete({
+    const color = await prisma.color.delete({
       where: {
-        id: params.billboardId,
+        id: params.colorId,
       },
     });
 
-    return NextResponse.json(billboard);
+    return NextResponse.json(color);
   } catch (error) {
-    console.log('[BILLBOARD_DELETE]', error);
+    console.log('[COLOR_DELETE]', error);
     return new NextResponse('Internal error', { status: 500 });
   }
 }
