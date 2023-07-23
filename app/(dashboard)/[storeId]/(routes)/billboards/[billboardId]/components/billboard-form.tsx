@@ -205,7 +205,6 @@ export default function BillboardForm({ billboard }: BillboardFormProps) {
           </Button>
         </form>
       </Form>
-      <Separator />
     </>
   );
 }

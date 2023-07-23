@@ -1,5 +1,3 @@
-'use client';
-
 import { CldUploadWidget as CloudUpload } from 'next-cloudinary';
 import Image from 'next/image';
 
@@ -35,7 +33,7 @@ export default function ImageUploader({
   return (
     <div>
       <div className='mb-4 flex items-center gap-4'>
-        {urls.map(url => (
+        {urls.map((url, i) => (
           <div
             key={url}
             className='relative h-[200px] w-[200px] overflow-hidden rounded-md'
@@ -53,8 +51,9 @@ export default function ImageUploader({
             <Image
               className='rounded-md object-cover'
               src={url}
+              alt={`Image ${i}`}
               fill
-              alt='Image'
+              placeholder='empty'
             />
           </div>
         ))}

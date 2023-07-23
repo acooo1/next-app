@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { BillboardColumn, billboardColumns } from './columns';
 import { PlusIcon } from 'lucide-react';
 
+import ApiList from '@/components/api-list';
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
 import Heading from '@/components/ui/heading';
@@ -36,7 +37,14 @@ export default function BillboardsClient({
         </Button>
       </div>
       <Separator />
-      <DataTable columns={billboardColumns} data={billboards} />
+      <DataTable
+        columns={billboardColumns}
+        data={billboards}
+        searchKey='label'
+      />
+      <Heading title='API' description='API calls for Billboards' />
+      <Separator />
+      <ApiList entityName='billboards' entityIdName='billboardId' />
     </>
   );
 }
